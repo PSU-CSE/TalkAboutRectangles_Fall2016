@@ -27,7 +27,6 @@ This will setup the sqlite database on your machine to be ready to play the game
    
 This will start a Django console, add the current working directory to the system path, and start the game.
 
-9. That's all it takes, you should now be set to play the game!
 
 #### On Windows: ####
 -------------------------
@@ -52,4 +51,3 @@ This will setup the sqlite database on your machine to be ready to play the game
    
 This will start a Django console, add the current working directory to the system path, and start the game.
 
-10. That's all it takes, you should now be set to play the game!
