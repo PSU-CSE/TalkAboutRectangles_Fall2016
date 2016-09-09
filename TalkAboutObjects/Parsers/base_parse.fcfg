@@ -1,0 +1,64 @@
+% start S
+# ###################
+# Grammar Productions
+# ###################
+#JM: This file contains the simplified grammar used to parse user input
+
+# S expansion productions
+S -> NP | NP RP NP | NP GP NP | JP
+
+# NP expansion productions
+NP -> DET JP NP | DET JP N
+NP -> DET NP | DET N
+
+#JP is an adjective phrase
+JP -> JP J | J
+
+# REL is equal to a relative phrase, eg one noun phrase relative to the other
+RP -> REL TO | REL REL OF | TO DET REL OF | REL | REL DET REL OF | TO REL OF
+
+#WP is a 'which is' phrase
+WP[] -> W[] VS[] | W[] V[]
+
+# GP is a gerund phrase
+GP[] -> G[] REL[] | G[]
+
+# AP is an adverbial phrase
+AP[] -> A[]
+
+# ###################
+# Lexical Productions
+# ###################
+
+DET[NUM=sg] -> 'this' | 'every'
+DET[NUM=pl] -> 'these' | 'all'
+DET -> 'the' | 'some' | 'several'
+
+#J are adjectives
+J -> 'adjective1' | 'adjective2' | 'adjective3' | 'adjective4' | 'adjective5' | 'adjective6' | 'adjective7' | 'adjective8' | 'adjective9' | 'adjective10' | 'adjective11' | 'adjective12' | 'adjective13' | 'adjective14' | 'adjective15'
+
+
+N[NUM=sg] -> 'rectangle' | 'box' | 'square' | 'one' | 'shape'
+N[NUM=pl] -> 'rectangles' | 'boxes' | 'squares' | 'ones' | 'shapes'
+
+#TO is the word 'to'
+TO -> 'to'
+
+#REL are relative words (mostly prepositions)
+REL -> 'next' | 'on' | 'between' | 'left' | 'right' | 'top' | 'above' | 'below' | 'before' | 'after'
+
+#OF is the word 'of'
+OF -> 'of'
+
+# G is a gerund
+G -> 'sitting' | 'touching'
+
+# A is an adverb
+A -> 'directly' | 'immediately' |
+
+#VS is a simple verb
+VS -> 'is' | 'are'
+
+#V is a complex verb
+V -> 'touches'
+
