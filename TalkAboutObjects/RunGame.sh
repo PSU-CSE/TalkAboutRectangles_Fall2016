@@ -1,1 +1,0 @@
-echo "import ApplicationGUI" | python DjangoDB/manage.py shell
