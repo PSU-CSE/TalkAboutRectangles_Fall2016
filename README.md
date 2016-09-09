@@ -20,7 +20,7 @@
 This will setup the sqlite database on your machine to be ready to play the game.
 8. Execute the following commands:
 
-   python DjangoDB/manage.py shell       # starts a python/Django console
+   % python DjangoDB/manage.py shell       # starts a python/Django console
    
    >>> execfile("initialize.py")
    
