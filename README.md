@@ -9,7 +9,7 @@
 #### On a Mac: ####
 ----------------------
 1. Ensure you have git installed on your mac. If you don't checkout this link for how to set it up: [How to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-2. Clone this repository
+2. Clone this repository: ```git clone https://github.com/PSU-CSE/TalkAboutRectangles_Fall2016.git```
 3. In a terminal, navigate to the directory this readme is located in and run a "git pull" to make sure everything is up to date.
 4. Ensure you have python2.7 installed on your machine along with pip, the python application manager (should have both by default on a mac).
 5. Check the file located at /TalkAboutRectangles/DjangoDB/DjangoDB/settings.py and make sure the paramter "USE_POSTGRES" is equal to "False". This ensures you are using a local version of the database. (An earlier experimental version used postgres.)
@@ -31,7 +31,7 @@ This will start a Django console, add the current working directory to the syste
 #### On Windows: ####
 -------------------------
 1. Ensure you have git installed on your pc. If you don't checkout this link for how to set it up: [How to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-2. Clone this repository
+2. Clone this repository: ```git clone https://github.com/PSU-CSE/TalkAboutRectangles_Fall2016.git```
 3. In a terminal, navigate to the directory this readme is located in and run a "git pull" to make sure everything is up to date.
 4. Make sure you have python 2.7 installed on your machine. If you don't, there are several options to download python. Downloading Anaconda includes python 2.7 and many very useful
 packages. Here's the link to download Anaconda: https://www.continuum.io/downloads
