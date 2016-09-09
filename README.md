@@ -19,13 +19,13 @@
 ```python DjangoDB/manage.py migrate```
 This will setup the sqlite database on your machine to be ready to play the game.
 8. Execute the following commands:
-
-   % python DjangoDB/manage.py shell       # starts a python/Django console
+```python DjangoDB/manage.py shell``` 
 
    \>\>\> execfile("initialize.py")
    
    \>\>\> import ApplicationGUI
    
+This will start a Django console, add the current working directory to the system path, and start the game.
 9. That's all it takes, you should now be set to play the game!
 
 #### On Windows: ####
@@ -44,7 +44,10 @@ packages. Here's the link to download Anaconda: https://www.continuum.io/downloa
 This will setup the sqlite database on your machine to be ready to play the game.
 9. Execute the following commands:
 ```python DjangoDB/manage.py shell```
-   >>> execfile("initialize.py")
-   >>> import ApplicationGUI
+
+   \>\>\> execfile("initialize.py")
+   
+   \>\>\> import ApplicationGUI
+   
 This will start a Django console, add the current working directory to the system path, and start the game.
 10. That's all it takes, you should now be set to play the game!
