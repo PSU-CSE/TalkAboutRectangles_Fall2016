@@ -9,20 +9,25 @@ from Parsers.AbstractParser import AbstractParser
 from database.models import SceneState, ACCEPT, INFORM, REJECT, MOVE_BACK
 from lexicon import grammar, rel_grammar, DomainFeatureStructure
 import nltk
+nltk.download('punkt')
 import traceback
 from nltk import parse
+from nltk.chunk import *
+from nltk.chunk.util import *
+from nltk.chunk.regexp import *
+from nltk import Tree
 
 nltk.data.path.append("Parsers/")
 
-#JM: constants representing the state of singular or plural
+# JM: constants representing the state of singular or plural
 SINGULAR = "S"
 PLURAL = "P"
 
-#JM: Words we treat as reject-state word
-retreat_words = ["no", "wrong", "incorrect", "not" ]
+# JM: Words we treat as reject-state word
+retreat_words = ["no", "wrong", "incorrect", "not"]
 
-#JM: words we use to imply an accept state
-accept_words = ["yes", "yeah", "ya", "ok", "okay", "right", "correct" ]
+# JM: words we use to imply an accept state
+accept_words = ["yes", "yeah", "ya", "ok", "okay", "right", "correct"]
 
 
 class FcfgParser(AbstractParser):
@@ -51,15 +56,67 @@ class FcfgParser(AbstractParser):
         :return: a new state with a user's action specified and the
             list of rectangles we think should be selected
         """
+
+        # DW: Use NLTK chunk parser to get a sentence structure]
+        tagged_text = nltk.pos_tag(nltk.word_tokenize(user_input))
+
+        chunk_rule = ChunkRule("<.*>+", "Chunk everything")
+        chink_rule = ChinkRule("<JJR|IN|\.>", "Chink on verbs/prepositions")
+        split_rule = SplitRule("<DT><NN>", "<DT><NN>", "Split successive determiner/noun pairs")
+
+        chunk_parser = RegexpChunkParser([chunk_rule, chink_rule], chunk_label='NP')
+        chunked_text = chunk_parser.parse(tagged_text)
+        np1, np2 = None, None
+        count = 0
+        for i in chunked_text:
+            count += 1
+
+        if count == 4:
+            # Extrapolate two noun phrases and send them back through the 'parse
+            np1 = chunked_text[0]
+            np2 = chunked_text[3]
+
+            # The comparative adjective
+            comparator = chunked_text[1]
+            np1_str = ""
+            np2_str = ""
+            jrr_str = "the " + comparator[0] + " ones"
+            for j in np1.leaves():
+                np1_str += j[0] + ' '
+            for j in np2.leaves():
+                np2_str += j[0] + ' '
+
+            # Obtain the two sets of rectangles described by both noun phrases
+            np1_rectangles = self.parse(np1_str, new_state, feature_sets)[1]
+            np2_rectangles = self.parse(np2_str, new_state, feature_sets)[1]
+            # jrr_rectangles = list(self.parse(jrr_str, new_state, feature_sets)[1])
+
+            # Attempt to sort the list of rectangles
+            all_rects = list(np1_rectangles.union(np2_rectangles))
+
+            # The following two lines are examples of failed attempts to sort the union set
+            # further development should try to accurately sort the union set
+
+            # all_rects = list([grammar[comparator[0]].call_func(i) for i in list(np1_rectangles.union(np2_rectangles))])
+            # all_rects.sort(grammar[comparator[0]].call_func(list()))
+
+            return_set = set()
+            found = False
+            for i in all_rects:
+                if i not in np2_rectangles and not found:
+                    return_set.add(i)
+                    found = True
+            return new_state, return_set
+
         self.adjective_options = []
         keys = grammar.keys()
         yy = []
 
-        #JM: We convert all of the keys from our lexicon into a tuple of
+        # JM: We convert all of the keys from our lexicon into a tuple of
         # (key, number of words in key)
         for key in keys:
             yy.append((key, len(key.split(" "))))
-        #JM: We then sort the keys by number of words in it from most to fewest
+        # JM: We then sort the keys by number of words in it from most to fewest
         # words because we want 'dark green' to be seen as one adjective not
         # the word 'dark' and the adjective 'green'
         keys = [x[0] for x in sorted(yy, key=lambda x: x[1], reverse=True)]
@@ -77,11 +134,10 @@ class FcfgParser(AbstractParser):
         # Strips punctuation
         tokens = [x.lower() for x in user_input.split() if not x in [".", "?", ",", "*"]]
 
-
-        #JM: Check to see if any of their words are negative ones
+        # JM: Check to see if any of their words are negative ones
         if any(x in tokens for x in retreat_words):
             new_state.action = REJECT
-        #JM: Check to see if any of their words are affirmative ones
+        # JM: Check to see if any of their words are affirmative ones
         elif any(x in tokens for x in accept_words):
             new_state.action = ACCEPT
         else:
@@ -90,13 +146,18 @@ class FcfgParser(AbstractParser):
             if len(tokens) == 2 and not tokens[0] in ["the", "a", "an"]:
                 tokens = ["the"] + tokens
 
-            sentences = self.parser.parse(tokens)
-
+            if np1 and np2:
+                np_1 = [x.lower() for x in np1]
+                print "NP_1", np_1
+                sentences = [self.parser.parse(np1), self.parser.parse(np2)]
+            else:
+                sentences = self.parser.parse(tokens)
             for i, line in enumerate(sentences):
+                print "S", line
                 self.parse_nodes(line)
 
-            #new_state = SceneState.move_next(current_state)
-            cur_rectangles, end_one= self.ground_feature_structures(feature_sets)
+            # new_state = SceneState.move_next(current_state)
+            cur_rectangles, end_one = self.ground_feature_structures(feature_sets)
             new_state.target_singular = end_one
         return new_state, cur_rectangles
 
@@ -111,7 +172,7 @@ class FcfgParser(AbstractParser):
         try:
             for sem in self.sem_blocks:
                 assert sem.term
-                print sem.term
+                #print sem.term
                 one = sem.number == SINGULAR
                 if len(sem.term) == 1:
                     groups.extend([grammar[jj].find(feature_sets, one=one) for jj in sem.term if jj in grammar])
@@ -131,7 +192,7 @@ class FcfgParser(AbstractParser):
 
                 groups = [x.members for x in groups]
                 cur_rectangles = set(groups[0]).intersection(*groups) if groups else []
-                #if end_one and len(cur_rectangles) > 1:
+                # if end_one and len(cur_rectangles) > 1:
                 #    cur_rectangles = []
         except BaseException as e:
             print(e)
@@ -150,24 +211,24 @@ class FcfgParser(AbstractParser):
         number = None
         input = ""
         for node in noun_phrase_node:
-            print("Noun phrase node:", node)
-            print(node.label())
+            #print("Noun phrase node:", node)
+            #print(node.label())
             if "JP" in str(node.label()):
                 for leaf in node.leaves():
                     adjective_key = int("".join([str(x) for x in leaf if x.isdigit()]))
-                    print("KEY", adjective_key)
-                    print(self.adjective_options)
-                    adjectives.append(self.adjective_options[adjective_key-1])
-                    print("ADJECTIVES", adjectives)
+                    #print("KEY", adjective_key)
+                    #print(self.adjective_options)
+                    adjectives.append(self.adjective_options[adjective_key - 1])
+                   # print("ADJECTIVES", adjectives)
             elif "= 'N'" in str(node.label()) and node.label()["NUM"] == "pl":
                 number = PLURAL
             elif "= 'N'" in str(node.label()) and node.label()["NUM"] == "sg":
                 number = SINGULAR
         sem = Semantics(number, adjectives, input)
-        print("THESE ARE THE NUMBER OF ADJECTIVES: " + str(len(adjectives)))
+        #print("THESE ARE THE NUMBER OF ADJECTIVES: " + str(len(adjectives)))
         self.adj_num = len(adjectives)
         self.tot_adj += self.adj_num
-        print("Sem found:", sem)
+        #print("Sem found:", sem)
         return sem
 
     def construct_rel_phrase(self, node):
@@ -176,12 +237,11 @@ class FcfgParser(AbstractParser):
         phrase node
         """
         input = " ".join([x.leaves()[0] for x in node if not "DET" in str(x.label())])
-        print("Relative phrase found", input)
+        #print("Relative phrase found", input)
         return input
 
-
     def construct_dict(self, node):
-        return {x:y for (x, y) in node.label().items()}
+        return {x: y for (x, y) in node.label().items()}
 
     def parse_nodes(self, parent):
         """
@@ -194,13 +254,13 @@ class FcfgParser(AbstractParser):
                     s = self.construct_fs(node)
                     self.sem_blocks.append(s)
                 elif "RP" in str(node.label()):
-                    print("Relative phrase found")
+                    #print("Relative phrase found")
                     self.rel_num += 1
                     self.linking_blocks.append(self.construct_rel_phrase(node))
                 self.parse_nodes(node)
 
     def get_adjectives(self):
-        if(self.rel_num != 0):
+        if (self.rel_num != 0):
             return self.tot_adj
         else:
             return self.adj_num
@@ -212,6 +272,7 @@ class FcfgParser(AbstractParser):
         self.rel_num = 0
         self.adj_num = 0
         self.tot_adj = 0
+
 
 class Semantics():
     """
@@ -228,4 +289,3 @@ class Semantics():
     def __str__(self):
         return "\nSEMANTICS\nShape: %s\nAjectives: %s\nNumber: %s\n\n" % \
                (self.shape, self.term, self.number)
-

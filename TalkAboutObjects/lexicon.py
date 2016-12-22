@@ -42,8 +42,26 @@ grammar = {
     "long": long_des,
     "square": square,
     "small": small,
-    "big": big
-          }
+    "tiny": small,
+    "little": small,
+    "big": big,
+    "large": big,
+    "skinnier": skinny,
+    "flatter": flat,
+    "taller": tall,
+    "longer": long_des,
+    "squarer": square,
+    "smaller": small,
+    "bigger": big,
+    "larger": big,
+    "skinnier than": skinny,
+    "flatter than": flat,
+    "taller than": tall,
+    "longer than": long_des,
+    "squarer than": square,
+    "smaller than": small,
+    "larger than": big
+}
 
 
 """
