@@ -19,10 +19,12 @@
 5.Install pip by typing python get-pip.py under TalkAboutRectangles folder in Command Prompt(run as administrator)
 
 6.run setupWindows.sh located under TalkAboutRectangles folder by typing . Please make sure that you run it with premission to install package!!
+
 	(for windows run it from command line as administrator(right click), find the TalkAboutRectangles/setupWindows.sh)
 	(for Linux: sudo -H sh setup.sh)
 	
 7.Execute the following commands: python DjangoDB/manage.py shell
+
 	>>> execfile("initialize.py")
 	>>> import ApplicationGUI
    
@@ -31,11 +33,17 @@ This will start a Django console, add the current working directory to the syste
 #### On a Mac: ####
 ----------------------
 1.Install git from https://git-scm.com/downloads
+
 2.Clone this repository: git clone https://github.com/PSU-CSE/TalkAboutRectangles_Fall2016.git
+
 3.In a terminal, navigate to the directory this readme is located in and run a "git pull" to make sure everything is up to date.
+
 4.Make sure that you have python 2.7 and pip install on you device   (should have by default on a mac)
+
 5.Run setupMac.sh in terminal by typing "sh setup.sh" under TalkAboutRectangles folder. Please make sure that you run it with premission to install package!! (for Linux: sudo -H sh setup.sh)
+
 6.Execute the following commands: python DjangoDB/manage.py shell
+
 	>>> execfile("initialize.py")
 	>>> import ApplicationGUI
    
