@@ -9,13 +9,19 @@
 #### On Windows: ####
 -------------------------
 1.Install git from https://git-scm.com/downloads
+
 2.Clone this repository: git clone https://github.com/PSU-CSE/TalkAboutRectangles_Fall2016.git
+
 3.In a Command Prompt(run as administrator), navigate to the directory this readme is located in and run a "git pull" to make sure everything is up to date.
+
 4.Install python 2.7 from https://www.python.org/downloads/
+
 5.Install pip by typing python get-pip.py under TalkAboutRectangles folder in Command Prompt(run as administrator)
+
 6.run setupWindows.sh located under TalkAboutRectangles folder by typing . Please make sure that you run it with premission to install package!!
 	(for windows run it from command line as administrator(right click), find the TalkAboutRectangles/setupWindows.sh)
 	(for Linux: sudo -H sh setup.sh)
+	
 7.Execute the following commands: python DjangoDB/manage.py shell
 	>>> execfile("initialize.py")
 	>>> import ApplicationGUI
