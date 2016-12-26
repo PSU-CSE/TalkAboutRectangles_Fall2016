@@ -19,9 +19,8 @@
 5.Install pip by typing python get-pip.py under TalkAboutRectangles folder in Command Prompt(run as administrator)
 
 6.run setupWindows.sh located under TalkAboutRectangles folder by typing . Please make sure that you run it with premission to install package!!
-
-	(for windows run it from command line as administrator(right click), find the TalkAboutRectangles/setupWindows.sh)
-	(for Linux: sudo -H sh setup.sh)
+(for windows run it from command line as administrator(right click), find the TalkAboutRectangles/setupWindows.sh)
+(for Linux: sudo -H sh setup.sh)
 	
 7.Execute the following commands: python DjangoDB/manage.py shell
 
@@ -54,19 +53,29 @@ This will start a Django console, add the current working directory to the syste
 ----------------------
 
 Error Message:
+
 setup.sh: line 4: pip: command not found
+
 Solution:
+
 Install pip by typing python get-pip.py under TalkAboutRectangles folder in Terminal (Command Prompt)
 
 Error Message:
+
 ....(many red lines before the last line)
+
 OSError: [Errno 13] Permission denied: '....' (A directory under python)
 (or)
 WindowsError: [Error 5] Access is denied: '....' (A directory under python)
+
 Solution:
+
 Make sure that you give the permission (you need to run it as an administrator) and try to run setup.sh again.
 
 Error Message:
+
 cannot install package platform error
+
 Solution:
+
 Run the setup.sh instead of setupWindows.sh (setupMac.sh) in the same way.
