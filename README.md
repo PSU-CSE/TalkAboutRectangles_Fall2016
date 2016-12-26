@@ -6,48 +6,53 @@
 
 ### How do I get set up? ###
 
-#### On a Mac: ####
-----------------------
-1. Ensure you have git installed on your mac. If you don't checkout this link for how to set it up: [How to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-2. Clone this repository: ```git clone https://github.com/PSU-CSE/TalkAboutRectangles_Fall2016.git```
-3. In a terminal, navigate to the directory this readme is located in and run a "git pull" to make sure everything is up to date.
-4. Ensure you have python2.7 installed on your machine along with pip, the python application manager (should have both by default on a mac).
-5. Check the file located at /TalkAboutRectangles/DjangoDB/DjangoDB/settings.py and make sure the paramter "USE_POSTGRES" is equal to "False". This ensures you are using a local version of the database. (An earlier experimental version used postgres.)
-```USE_POSTGRES = False```
-6. From within the /TalkAboutObjects directory, run "pip install -r requirements.txt" this will install all of the necessary python applications if they aren't already on your machine
-7. Run the following command:
-```python DjangoDB/manage.py migrate```
-This will setup the sqlite database on your machine to be ready to play the game.
-8. Execute the following commands:
-```python DjangoDB/manage.py shell``` 
-
-   \>\>\> execfile("initialize.py")
-   
-   \>\>\> import ApplicationGUI
-   
-This will start a Django console, add the current working directory to the system path, and start the game.
-
-
 #### On Windows: ####
 -------------------------
-1. Ensure you have git installed on your pc. If you don't checkout this link for how to set it up: [How to install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-2. Clone this repository: ```git clone https://github.com/PSU-CSE/TalkAboutRectangles_Fall2016.git```
-3. In a terminal, navigate to the directory this readme is located in and run a "git pull" to make sure everything is up to date.
-4. Make sure you have python 2.7 installed on your machine. If you don't, there are several options to download python. Downloading Anaconda includes python 2.7 and many very useful
-packages. Here's the link to download Anaconda: https://www.continuum.io/downloads
-5. Install pip. Pip makes installing python packages very easy. Here's the link to the download: https://pip.pypa.io/en/latest/installing/
-6. Check the file located at /TalkAboutObjects/DjangoDB/DjangoDB/settings.py and make sure the parameter "USE_POSTGRES" is equal to "False". This ensures you are using a local version of the database.  (An earlier experimental version used postgres.)
-```USE_POSTGRES = False```
-7. from within the /TalkAboutObjects directory, run "pip install -r requirements.txt" this will install all of the necessary python applications if they aren't already on your machine
-8. run the following command:
-```python DjangoDB/manage.py migrate```
-This will setup the sqlite database on your machine to be ready to play the game.
-9. Execute the following commands:
-```python DjangoDB/manage.py shell```
-
-   \>\>\> execfile("initialize.py")
-   
-   \>\>\> import ApplicationGUI
+1.Install git from https://git-scm.com/downloads
+2.Clone this repository: git clone https://github.com/PSU-CSE/TalkAboutRectangles_Fall2016.git
+3.In a Command Prompt(run as administrator), navigate to the directory this readme is located in and run a "git pull" to make sure everything is up to date.
+4.Install python 2.7 from https://www.python.org/downloads/
+5.Install pip by typing python get-pip.py under TalkAboutRectangles folder in Command Prompt(run as administrator)
+6.run setupWindows.sh located under TalkAboutRectangles folder by typing . Please make sure that you run it with premission to install package!!
+	(for windows run it from command line as administrator(right click), find the TalkAboutRectangles/setupWindows.sh)
+	(for Linux: sudo -H sh setup.sh)
+7.Execute the following commands: python DjangoDB/manage.py shell
+	>>> execfile("initialize.py")
+	>>> import ApplicationGUI
    
 This will start a Django console, add the current working directory to the system path, and start the game.
 
+#### On a Mac: ####
+----------------------
+1.Install git from https://git-scm.com/downloads
+2.Clone this repository: git clone https://github.com/PSU-CSE/TalkAboutRectangles_Fall2016.git
+3.In a terminal, navigate to the directory this readme is located in and run a "git pull" to make sure everything is up to date.
+4.Make sure that you have python 2.7 and pip install on you device   (should have by default on a mac)
+5.Run setupMac.sh in terminal by typing "sh setup.sh" under TalkAboutRectangles folder. Please make sure that you run it with premission to install package!! (for Linux: sudo -H sh setup.sh)
+6.Execute the following commands: python DjangoDB/manage.py shell
+	>>> execfile("initialize.py")
+	>>> import ApplicationGUI
+   
+This will start a Django console, add the current working directory to the system path, and start the game.
+
+
+#### Trouble Shooting: ####
+----------------------
+
+Error Message:
+setup.sh: line 4: pip: command not found
+Solution:
+Install pip by typing python get-pip.py under TalkAboutRectangles folder in Terminal (Command Prompt)
+
+Error Message:
+....(many red lines before the last line)
+OSError: [Errno 13] Permission denied: '....' (A directory under python)
+(or)
+WindowsError: [Error 5] Access is denied: '....' (A directory under python)
+Solution:
+Make sure that you give the permission (you need to run it as an administrator) and try to run setup.sh again.
+
+Error Message:
+cannot install package platform error
+Solution:
+Run the setup.sh instead of setupWindows.sh (setupMac.sh) in the same way.
